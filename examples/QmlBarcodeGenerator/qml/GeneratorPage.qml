@@ -24,8 +24,22 @@ ApplicationWindow {
     }
   }
 
+  ColorController {
+    id: colorController
+  }
+
   SBarcodeGenerator {
     id: barcodeGenerator
+
+    onForegroundColorChanged: {
+      image.source = ""
+      barcodeGenerator.generate(textField.text)
+    }
+
+    onBackgroundColorChanged: {
+      image.source = ""
+      barcodeGenerator.generate(textField.text)
+    }
 
     onGenerationFinished: function (error) {
       if (error === "") {
@@ -58,15 +72,6 @@ ApplicationWindow {
         right: parent.right
       }
 
-      //      TextField {
-      //        id: textField
-
-      //        anchors.fill: parent
-
-      //        selectByMouse: true
-
-      //        placeholderText: qsTr("Input")
-      //      }
       CTextField {
         id: textField
 
@@ -226,7 +231,7 @@ ApplicationWindow {
           id: widthField
 
           implicitWidth: parent.width
-          implicitHeight: parent.height / 8
+          implicitHeight: parent.height / 10
 
           placeholderText: "Current width: " + barcodeGenerator.width
 
@@ -244,7 +249,7 @@ ApplicationWindow {
           id: heightField
 
           implicitWidth: parent.width
-          implicitHeight: parent.height / 8
+          implicitHeight: parent.height / 10
 
           placeholderText: "Current height: " + barcodeGenerator.height
 
@@ -262,7 +267,7 @@ ApplicationWindow {
           id: marginField
 
           implicitWidth: parent.width
-          implicitHeight: parent.height / 8
+          implicitHeight: parent.height / 10
 
           placeholderText: "Current margin: " + barcodeGenerator.margin
 
@@ -280,7 +285,7 @@ ApplicationWindow {
           id: eccLevelField
 
           implicitWidth: parent.width
-          implicitHeight: parent.height / 8
+          implicitHeight: parent.height / 10
 
           placeholderText: "Current ECC Level: " + barcodeGenerator.eccLevel
 
@@ -289,11 +294,45 @@ ApplicationWindow {
           }
         }
 
+        CTextField {
+          id: foregroundColorField
+
+          implicitWidth: parent.width
+          implicitHeight: parent.height / 10
+
+          placeholderText: "Current foreground color: " + barcodeGenerator.foregroundColor
+
+          onTextChanged: function () {
+            foregroundColorField.inputIsValid = colorController.checkColor(foregroundColorField.text)
+
+            if (colorController.checkColor(foregroundColorField.text)) {
+              barcodeGenerator.setForegroundColor(colorController.convertStringToColor(foregroundColorField.text))
+            }
+          }
+        }
+
+        CTextField {
+          id: backgroundColorField
+
+          implicitWidth: parent.width
+          implicitHeight: parent.height / 10
+
+          placeholderText: "Current background color: " + barcodeGenerator.backgroundColor
+
+          onTextChanged: function () {
+            backgroundColorField.inputIsValid = colorController.checkColor(backgroundColorField.text)
+
+            if (colorController.checkColor(backgroundColorField.text)) {
+              barcodeGenerator.setBackgroundColor(colorController.convertStringToColor(backgroundColorField.text))
+            }
+          }
+        }
+
         CComboBox {
           id: formatDropDown
 
           implicitWidth: parent.width
-          implicitHeight: parent.height / 8
+          implicitHeight: parent.height / 10
 
           model: ListModel {
             id: formats
@@ -350,7 +389,7 @@ ApplicationWindow {
           id: imageFormat
 
           implicitWidth: parent.width
-          implicitHeight: parent.height / 8
+          implicitHeight: parent.height / 10
 
           model: ListModel {
             id: extensions
@@ -374,10 +413,40 @@ ApplicationWindow {
           text: qsTr(barcodeGenerator.fileName)
 
           implicitWidth: parent.width
-          implicitHeight: parent.height / 8
+          implicitHeight: parent.height / 10
 
           onEditingFinished: {
             barcodeGenerator.fileName = text
+          }
+        }
+
+        CTextField {
+          id: imagePathField
+
+          text: qsTr(barcodeGenerator.imagePath)
+
+          implicitWidth: parent.width
+          implicitHeight: parent.height / 10
+
+          placeholderText: "Current image path: " + barcodeGenerator.imagePath
+
+          onEditingFinished: {
+            barcodeGenerator.imagePath = text
+          }
+        }
+
+        CTextField {
+          id: centerImageRatioField
+
+          text: qsTr(barcodeGenerator.centerImageRatio.toString())
+
+          implicitWidth: parent.width
+          implicitHeight: parent.height / 10
+
+          placeholderText: "Current center image ratio: " + barcodeGenerator.centerImageRatio
+
+          onEditingFinished: {
+            barcodeGenerator.centerImageRatio = parseInt(text)
           }
         }
       }
