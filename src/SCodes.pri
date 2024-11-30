@@ -1,4 +1,9 @@
-QT += multimedia concurrent
+equals(with_multimedia, 1) {
+	QT += multimedia
+	DEFINES += WITH_MULTIMEDIA
+}
+
+QT += concurrent
 
 
 CONFIG += qmltypes
@@ -10,7 +15,7 @@ INCLUDEPATH += \
     $$PWD/zxing-cpp/core/src/ \
 
 
-equals(QT_MAJOR_VERSION, 6) {
+equals(QT_MAJOR_VERSION, 6):equals(with_multimedia, 1) {
     HEADERS += \
         $$PWD/SBarcodeScanner.h
 

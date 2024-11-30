@@ -164,6 +164,8 @@ void SBarcodeDecoder::process(const QImage& capturedImage, ZXing::BarcodeFormats
     }
 }
 
+#ifdef WITH_MULTIMEDIA
+
 QImage SBarcodeDecoder::videoFrameToImage(const QVideoFrame &videoFrame, const QRect &captureRect) const
 {
 
@@ -226,6 +228,8 @@ QImage SBarcodeDecoder::videoFrameToImage(const QVideoFrame &videoFrame, const Q
 #endif // QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 
 }
+
+#endif // WITH_MULTIMEDIA
 
 void SBarcodeDecoder::setResolution(int w, int h)
 {

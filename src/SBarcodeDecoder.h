@@ -2,7 +2,11 @@
 #define QR_DECODER_H
 
 #include <QObject>
+#ifdef WITH_MULTIMEDIA
 #include <QVideoFrame>
+#else
+#include <QSize>
+#endif
 
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
@@ -52,7 +56,9 @@ public:
      * \param QVideoFrame &videoFrame - frame of video data.
      * \param const QRect &captureRect - capture area rectangle.
      */
+#ifdef WITH_MULTIMEDIA
     QImage videoFrameToImage(const QVideoFrame &videoFrame, const QRect &captureRect) const;
+#endif
 
     /*!
      * \fn void setResolution(const int &w, const int &h)
