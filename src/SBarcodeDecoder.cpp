@@ -3,7 +3,7 @@
 
 #include <QDebug>
 #include <QImage>
-#include <QtMultimedia/qvideoframe.h>
+//#include <QtMultimedia/qvideoframe.h>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOffscreenSurface>
